@@ -1,12 +1,12 @@
 {
-  "name": "typescript-template",
+  "name": "Odin Knight's Travails",
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
   "scripts": {
     "test": "jest",
     "build": "tsc --build",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "author": "",
   "license": "ISC",
