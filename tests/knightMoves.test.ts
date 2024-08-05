@@ -62,3 +62,18 @@ describe('getValidMoves tests', () => {
 		]);
 	});
 });
+
+describe('knightMoves tests', () => {
+	test('single move test', () => {
+		expect(knightMoves([0, 0], [2, 1])).toEqual([
+			[0, 0],
+			[2, 1],
+		]);
+	});
+
+	test('project prompt test', () => {
+		expect(knightMoves([0, 0], [3, 3]).length).toBe(3);
+		expect(knightMoves([3, 3], [0, 0]).length).toBe(3);
+		expect(knightMoves([0, 0], [7, 7]).length).toBe(7);
+	});
+});

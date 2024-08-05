@@ -29,13 +29,55 @@ const getValidMoves = (space: [number, number]): [number, number][] => {
 	][];
 };
 
+const adjacencyMatrix: { steps?: number; previousStep?: [number, number] }[][] =
+	[];
+for (let i = BOARD_LOWER_BOUND; i <= BOARD_UPPER_BOUND; i++) {
+	adjacencyMatrix[i] = [];
+	for (let j = BOARD_LOWER_BOUND; j <= BOARD_UPPER_BOUND; j++) {
+		adjacencyMatrix[i][j] = {};
+	}
+}
+
+const spacesAreEqual = (
+	[a, b]: [number, number],
+	[x, y]: [number, number],
+): boolean => {
+	return a === x && b === y;
+};
+
 const knightMoves = (
 	start: [number, number],
 	end: [number, number],
 ): [number, number][] => {
-	const moves: [number, number][] = [];
+	const journey = structuredClone(adjacencyMatrix);
 
-	return moves;
+	let journeyQueue: [number, number][] = [start];
+	journey[start[0]][start[1]].steps = 0;
+	while (journeyQueue.length) {
+		let currentSpace = journeyQueue.shift();
+		let adjacentSpaces = getValidMoves(currentSpace);
+		adjacentSpaces.forEach((space) => {
+			if (journey[space[0]][space[1]].steps == undefined) {
+				journey[space[0]][space[1]].steps =
+					journey[currentSpace[0]][currentSpace[1]].steps + 1;
+				journey[space[0]][space[1]].previousStep = currentSpace;
+
+				if (spacesAreEqual(space, end)) journeyQueue.unshift(space);
+				else journeyQueue.push(space);
+			}
+		});
+
+		if (spacesAreEqual(currentSpace, end)) {
+			const moves: [number, number][] = [end];
+			let previousStep = journey[end[0]][end[1]].previousStep;
+			while (previousStep != undefined) {
+				moves.unshift(previousStep);
+				previousStep =
+					journey[previousStep[0]][previousStep[1]].previousStep;
+			}
+			return moves;
+		}
+	}
 };
 
 export { isValidSpace, getValidMoves, knightMoves };
